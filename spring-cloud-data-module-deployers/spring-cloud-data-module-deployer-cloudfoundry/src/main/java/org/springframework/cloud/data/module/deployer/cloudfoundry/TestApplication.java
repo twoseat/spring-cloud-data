@@ -27,6 +27,7 @@ import org.springframework.cloud.data.module.ModuleInstanceStatus;
 import org.springframework.cloud.data.module.ModuleStatus;
 import org.springframework.cloud.data.module.deployer.ModuleDeployer;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.client.HttpClientErrorException;
 
 /**
  * This is a convenience class used to try out this implementation of the deployer until it's correctly wired in
@@ -37,40 +38,48 @@ import org.springframework.context.ApplicationContext;
 final class TestApplication {
 
 	public static void main(String[] args) {
-		ApplicationContext applicationContext = SpringApplication.run(CloudFoundryModuleDeployerConfiguration.class, args);
+		try {
 
-		ModuleDeployer moduleDeployer = applicationContext.getBean(ModuleDeployer.class);
+			ApplicationContext applicationContext = SpringApplication.run(CloudFoundryModuleDeployerConfiguration.class, args);
 
-		// Get current state
-		Map<ModuleDeploymentId, ModuleStatus> mds = moduleDeployer.status();
-		System.out.println("\nmoduleDeployer.status() ==> " + prettyPrint(mds));
+			ModuleDeployer moduleDeployer = applicationContext.getBean(ModuleDeployer.class);
 
-		// Get one of the current ModuleDeploymentIds
-		ModuleDeploymentId[] moduleDeploymentIds = mds.keySet().toArray(new ModuleDeploymentId[mds.size()]);
-		for (ModuleDeploymentId mdid : moduleDeploymentIds) {
-			moduleDeployer.undeploy(mdid);
+			// Get current state
+			Map<ModuleDeploymentId, ModuleStatus> mds = moduleDeployer.status();
+			System.out.println("\nmoduleDeployer.status() ==> " + prettyPrint(mds));
+
+			// Get one of the current ModuleDeploymentIds
+			ModuleDeploymentId[] moduleDeploymentIds = mds.keySet().toArray(new ModuleDeploymentId[mds.size()]);
+			for (ModuleDeploymentId mdid : moduleDeploymentIds) {
+				moduleDeployer.undeploy(mdid);
+			}
+
+
+
+			System.out.println("\nmoduleDeployer.status() ==> " + prettyPrint(moduleDeployer.status()));
+
+			ModuleDefinition md = new ModuleDefinition.Builder().setName("time").setLabel("time")
+					.setGroup("ticktock")
+					.setParameter("fixedDelay", "1")
+					.build();
+			ModuleDeploymentRequest mdr = new ModuleDeploymentRequest(md, ModuleCoordinates.parse("org.springframework.cloud.stream.module:time-source:1.0.0.BUILD-SNAPSHOT"));
+
+			ModuleDeploymentId moduleDeploymentId = moduleDeployer.deploy(mdr);
+
+			ModuleDefinition md2 = new ModuleDefinition.Builder().setName("log").setLabel("log")
+					.setGroup("ticktock")
+					.setParameter("fixedDelay", "1")
+					.build();
+			ModuleDeploymentRequest mdr2 = new ModuleDeploymentRequest(md2, ModuleCoordinates.parse("org.springframework.cloud.stream.module:log-sink:1.0.0.BUILD-SNAPSHOT"));
+
+			moduleDeployer.deploy(mdr2);
+
+
+			System.out.println("\nmoduleDeployer.status() ==> " + prettyPrint(moduleDeployer.status()));
 		}
-
-		System.out.println("\nmoduleDeployer.status() ==> " + prettyPrint(moduleDeployer.status()));
-
-		ModuleDefinition md = new ModuleDefinition.Builder().setName("time").setLabel("time")
-				.setGroup("ticktock")
-				.setParameter("fixedDelay", "1")
-				.build();
-		ModuleDeploymentRequest mdr = new ModuleDeploymentRequest(md, ModuleCoordinates.parse("org.springframework.cloud.stream.module:time-source:1.0.0.BUILD-SNAPSHOT"));
-
-		ModuleDeploymentId moduleDeploymentId = moduleDeployer.deploy(mdr);
-
-		ModuleDefinition md2 = new ModuleDefinition.Builder().setName("log").setLabel("log")
-				.setGroup("ticktock")
-				.setParameter("fixedDelay", "1")
-				.build();
-		ModuleDeploymentRequest mdr2 = new ModuleDeploymentRequest(md2, ModuleCoordinates.parse("org.springframework.cloud.stream.module:log-sink:1.0.0.BUILD-SNAPSHOT"));
-
-		moduleDeployer.deploy(mdr2);
-
-
-		System.out.println("\nmoduleDeployer.status() ==> " + prettyPrint(moduleDeployer.status()));
+		catch (HttpClientErrorException errorException) {
+			System.err.println(errorException.getResponseBodyAsString());
+		}
 
 //        ModuleStatus ms = moduleDeployer.status(new ModuleDeploymentId("a", "Steve"));
 //        System.out.println("\nmoduleDeployer.status(MDI(\"a\",\"Steve\")) ==> " + ms.getState());

@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * @author Steve Powell
  */
-abstract class AbstractPaginatedResponse {
+abstract class AbstractPaginatedResponse<R> {
 
 	private volatile int totalResults;
 
@@ -33,7 +33,7 @@ abstract class AbstractPaginatedResponse {
 
 	private volatile String nextUrl;
 
-	private volatile List<ResourceResponse> resources;
+	private volatile List<R> resources;
 
 	public final int getTotalResults() {
 		return totalResults;
@@ -71,11 +71,11 @@ abstract class AbstractPaginatedResponse {
 		this.nextUrl = nextUrl;
 	}
 
-	public final List<ResourceResponse> getResources() {
+	public final List<R> getResources() {
 		return resources;
 	}
 
-	public final void setResources(List<ResourceResponse> resources) {
+	public final void setResources(List<R> resources) {
 		this.resources = resources;
 	}
 

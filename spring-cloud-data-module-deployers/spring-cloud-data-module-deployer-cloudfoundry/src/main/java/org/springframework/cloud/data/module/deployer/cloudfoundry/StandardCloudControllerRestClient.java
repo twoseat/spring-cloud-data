@@ -104,6 +104,15 @@ final class StandardCloudControllerRestClient implements CloudControllerRestClie
 	}
 
 	@Override
+	public ListServiceBindingsResponse listServiceBindings(ListServiceBindingsRequest request) {
+		URI uri = UriComponentsBuilder.fromUri(this.endpoint)
+				.pathSegment("v2", "apps", request.getAppId(), "service_bindings")
+				.build().toUri();
+
+		return this.restOperations.getForObject(uri, ListServiceBindingsResponse.class);
+	}
+
+	@Override
 	public ListSpacesResponse listSpaces(ListSpacesRequest request) {
 		URI uri = UriComponentsBuilder.fromUri(this.endpoint)
 				.pathSegment("v2", "spaces")
@@ -112,6 +121,21 @@ final class StandardCloudControllerRestClient implements CloudControllerRestClie
 				.build().toUri();
 
 		return this.restOperations.getForObject(uri, ListSpacesResponse.class);
+	}
+
+	@Override
+	public RemoveServiceBindingResponse removeServiceBinding(RemoveServiceBindingRequest request) {
+		URI uri = UriComponentsBuilder.fromUri(this.endpoint)
+				.pathSegment("v2", "apps", request.getAppId(), "service_bindings", request.getBindingId())
+				.build().toUri();
+
+		try {
+			this.restOperations.delete(uri);
+			return new RemoveServiceBindingResponse();
+		}
+		catch (RestClientException _) {
+			return null;
+		}
 	}
 
 	@Override

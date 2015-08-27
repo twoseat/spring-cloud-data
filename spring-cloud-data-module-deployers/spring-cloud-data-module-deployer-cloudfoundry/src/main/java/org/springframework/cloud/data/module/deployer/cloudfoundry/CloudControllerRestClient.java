@@ -56,6 +56,14 @@ interface CloudControllerRestClient {
 	ListApplicationsResponse listApplications(ListApplicationsRequest request);
 
 	/**
+	 * Lists services bindings for a given application.
+	 * @param request the structure carrying all necessary parameters
+	 * @return a Response instance carrying all the response values expected
+	 * @throws org.springframework.web.client.RestClientException in the event of failure
+	 */
+	ListServiceBindingsResponse listServiceBindings(ListServiceBindingsRequest request);
+
+	/**
 	 * Lists all the known organizations (with their ids).
 	 * @param request the structure carrying all necessary parameters
 	 * @return a Response instance carrying all the response values expected
@@ -70,6 +78,14 @@ interface CloudControllerRestClient {
 	 * @throws org.springframework.web.client.RestClientException in the event of failure
 	 */
 	ListSpacesResponse listSpaces(ListSpacesRequest request);
+
+	/**
+	 * Remove a service binding from a particular application.
+	 * @param request the structure carrying all necessary parameters
+	 * @return a Response instance carrying all the response values expected
+	 * @throws org.springframework.web.client.RestClientException in the event of failure
+	 */
+	RemoveServiceBindingResponse removeServiceBinding(RemoveServiceBindingRequest request);
 
 	/**
 	 * Uploads the bits required for an application (identified by its id) to run.

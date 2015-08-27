@@ -16,10 +16,21 @@
 
 package org.springframework.cloud.data.module.deployer.cloudfoundry;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
- * Response from REST operation {@link CloudControllerRestClient#listSpaces(ListSpacesRequest) listSpaces()}.
- *
- * @author Steve Powell
+ * Created by ericbottard on 27/08/15.
  */
-final class ListSpacesResponse extends AbstractPaginatedResponse<ResourceResponse<NamedEntity>> {
+public class ListServiceBindingsRequest {
+
+	private String appId;
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public ListServiceBindingsRequest withAppId(String appId) {
+		this.appId = appId;
+		return this;
+	}
 }

@@ -17,9 +17,11 @@
 package org.springframework.cloud.data.module.deployer.cloudfoundry;
 
 /**
- * Response from REST operation {@link CloudControllerRestClient#listSpaces(ListSpacesRequest) listSpaces()}.
+ * Response mapping for a service binding entity.
  *
- * @author Steve Powell
+ * @author Eric Bottard
  */
-final class ListSpacesResponse extends AbstractPaginatedResponse<ResourceResponse<NamedEntity>> {
+public final class ServiceBindingEntity {
+
+	// Nothing specific needed atm
 }

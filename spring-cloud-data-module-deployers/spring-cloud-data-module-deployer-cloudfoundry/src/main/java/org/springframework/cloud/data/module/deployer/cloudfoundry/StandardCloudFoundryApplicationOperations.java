@@ -49,20 +49,34 @@ final class StandardCloudFoundryApplicationOperations implements CloudFoundryApp
 
 	@Override
 	public DeleteApplicationResults deleteApplication(DeleteApplicationParameters parameters) {
+		// Check that application actually exists
 		ListApplicationsRequest listRequest = new ListApplicationsRequest()
 				.withSpaceId(this.spaceId)
 				.withName(parameters.getName());
 
-		List<ResourceResponse> applications = this.client.listApplications(listRequest).getResources();
+		List<ResourceResponse<ApplicationEntity>> applications = this.client.listApplications(listRequest).getResources();
 
 		if (applications.isEmpty()) {
 			return new DeleteApplicationResults().withFound(false);
 		}
+		String appId = applications.get(0).getMetadata().getId();
 
-		DeleteApplicationRequest deleteReqeust = new DeleteApplicationRequest()
-				.withId(applications.get(0).getMetadata().getId());
+		// Then, unbind any services
+		ListServiceBindingsRequest listServiceBindingsRequest = new ListServiceBindingsRequest()
+				.withAppId(appId);
+		List<ResourceResponse<ServiceBindingEntity>> serviceBindings = this.client.listServiceBindings(listServiceBindingsRequest).getResources();
+		for (ResourceResponse<ServiceBindingEntity> serviceBinding : serviceBindings) {
+			this.client.removeServiceBinding(new RemoveServiceBindingRequest()
+					.withAppId(appId)
+					.withBindingId(serviceBinding.getMetadata().getId())
+			);
+		}
 
-		DeleteApplicationResponse response = this.client.deleteApplication(deleteReqeust);
+		// Then, perform the actual deletion
+		DeleteApplicationRequest deleteRequest = new DeleteApplicationRequest()
+				.withId(appId);
+
+		DeleteApplicationResponse response = this.client.deleteApplication(deleteRequest);
 
 		return new DeleteApplicationResults().withFound(true).withDeleted(response.isDeleted());
 	}
@@ -77,13 +91,13 @@ final class StandardCloudFoundryApplicationOperations implements CloudFoundryApp
 			listRequest.withName(parameters.getName());
 		}
 
-		List<ResourceResponse> applications = this.client.listApplications(listRequest).getResources();
+		List<ResourceResponse<ApplicationEntity>> applications = this.client.listApplications(listRequest).getResources();
 		if (applications.isEmpty()) {
 			return new GetApplicationsStatusResults();
 		}
 
 		GetApplicationsStatusResults response = new GetApplicationsStatusResults();
-		for (ResourceResponse application : applications) {
+		for (ResourceResponse<ApplicationEntity> application : applications) {
 			String applicationId = application.getMetadata().getId();
 			String applicationName = application.getEntity().getName();
 			String applicationState = application.getEntity().getState();
@@ -137,8 +151,8 @@ final class StandardCloudFoundryApplicationOperations implements CloudFoundryApp
 		UpdateApplicationRequest updateRequest = new UpdateApplicationRequest()
 				.withId(createResponse.getMetadata().getId())
 				.withState("STARTED");
-		UpdateApplicationResponse updateRespoonse = this.client.updateApplication(updateRequest);
-		if (updateRespoonse == null) {
+		UpdateApplicationResponse updateResponse = this.client.updateApplication(updateRequest);
+		if (updateResponse == null) {
 			return pushResponse.withError(PushApplicationResults.Error.START_FAILED);
 		}
 

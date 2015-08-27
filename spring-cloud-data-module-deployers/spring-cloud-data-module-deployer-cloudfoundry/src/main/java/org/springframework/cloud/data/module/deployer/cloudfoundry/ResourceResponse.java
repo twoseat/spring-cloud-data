@@ -24,11 +24,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @author Steve Powell
  */
-class ResourceResponse {
+class ResourceResponse<E> {
 
 	private volatile Metadata metadata;
 
-	private volatile Entity entity;
+	private volatile E entity;
 
 	public Metadata getMetadata() {
 		return metadata;
@@ -84,34 +84,12 @@ class ResourceResponse {
 		}
 	}
 
-	public Entity getEntity() {
+	public E getEntity() {
 		return entity;
 	}
 
-	public void setEntity(Entity entity) {
+	public void setEntity(E entity) {
 		this.entity = entity;
 	}
 
-	static final class Entity {
-
-		private volatile String name;
-
-		private volatile String state;
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public String getState() {
-			return state;
-		}
-
-		public void setState(String state) {
-			this.state = state;
-		}
-	}
 }

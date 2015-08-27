@@ -17,9 +17,16 @@
 package org.springframework.cloud.data.module.deployer.cloudfoundry;
 
 /**
- * Response from REST operation {@link CloudControllerRestClient#listSpaces(ListSpacesRequest) listSpaces()}.
- *
- * @author Steve Powell
+ * Created by ericbottard on 27/08/15.
  */
-final class ListSpacesResponse extends AbstractPaginatedResponse<ResourceResponse<NamedEntity>> {
+public final class ApplicationEntity extends NamedEntity {
+	private volatile String state;
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
 }

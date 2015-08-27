@@ -17,9 +17,28 @@
 package org.springframework.cloud.data.module.deployer.cloudfoundry;
 
 /**
- * Response from REST operation {@link CloudControllerRestClient#listSpaces(ListSpacesRequest) listSpaces()}.
- *
- * @author Steve Powell
+ * Created by ericbottard on 27/08/15.
  */
-final class ListSpacesResponse extends AbstractPaginatedResponse<ResourceResponse<NamedEntity>> {
+public class RemoveServiceBindingRequest {
+	private String bindingId;
+
+	private String appId;
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public RemoveServiceBindingRequest withAppId(String id) {
+		this.appId = id;
+		return this;
+	}
+
+	public String getBindingId() {
+		return bindingId;
+	}
+
+	public RemoveServiceBindingRequest withBindingId(String bindingId) {
+		this.bindingId = bindingId;
+		return this;
+	}
 }
