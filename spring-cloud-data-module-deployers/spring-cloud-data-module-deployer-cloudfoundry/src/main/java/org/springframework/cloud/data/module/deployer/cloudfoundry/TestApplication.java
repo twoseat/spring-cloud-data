@@ -54,8 +54,6 @@ final class TestApplication {
 				moduleDeployer.undeploy(mdid);
 			}
 
-
-
 			System.out.println("\nmoduleDeployer.status() ==> " + prettyPrint(moduleDeployer.status()));
 
 			ModuleDefinition md = new ModuleDefinition.Builder().setName("time").setLabel("time")

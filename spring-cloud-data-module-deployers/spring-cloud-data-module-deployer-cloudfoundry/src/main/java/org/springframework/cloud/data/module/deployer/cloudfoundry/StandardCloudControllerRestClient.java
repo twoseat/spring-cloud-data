@@ -25,7 +25,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -52,6 +51,7 @@ final class StandardCloudControllerRestClient implements CloudControllerRestClie
 		URI uri = UriComponentsBuilder.fromUri(this.endpoint)
 				.pathSegment("v2", "apps")
 				.build().toUri();
+
 		return this.restOperations.postForObject(uri, request, CreateApplicationResponse.class);
 	}
 
@@ -126,7 +126,7 @@ final class StandardCloudControllerRestClient implements CloudControllerRestClie
 
 		this.restOperations.delete(uri);
 		return new RemoveServiceBindingResponse();
-}
+	}
 
 	@Override
 	public UpdateApplicationResponse updateApplication(UpdateApplicationRequest request) {

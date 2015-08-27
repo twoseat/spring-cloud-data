@@ -50,7 +50,8 @@ public class CreateApplicationRequest<T extends CreateApplicationRequest<T>> {
 
 	public T withName(String name) {
 		this.name = name;
-		return (T) this;
+		@SuppressWarnings("unchecked") T thisT = (T) this;
+		return thisT;
 	}
 
 	public Integer getInstances() {
@@ -59,7 +60,8 @@ public class CreateApplicationRequest<T extends CreateApplicationRequest<T>> {
 
 	public T withInstances(int instances) {
 		this.instances = instances;
-		return (T) this;
+		@SuppressWarnings("unchecked") T thisT = (T) this;
+		return thisT;
 	}
 
 	public Integer getMemory() {
@@ -68,7 +70,8 @@ public class CreateApplicationRequest<T extends CreateApplicationRequest<T>> {
 
 	public T withMemory(int memory) {
 		this.memory = memory;
-		return (T) this;
+		@SuppressWarnings("unchecked") T thisT = (T) this;
+		return thisT;
 	}
 
 	@JsonProperty("space_guid")
@@ -78,7 +81,8 @@ public class CreateApplicationRequest<T extends CreateApplicationRequest<T>> {
 
 	public T withSpaceId(String spaceId) {
 		this.spaceId = spaceId;
-		return (T) this;
+		@SuppressWarnings("unchecked") T thisT = (T) this;
+		return thisT;
 	}
 
 	public String getState() {
@@ -87,7 +91,8 @@ public class CreateApplicationRequest<T extends CreateApplicationRequest<T>> {
 
 	public T withState(String state) {
 		this.state = state;
-		return (T) this;
+		@SuppressWarnings("unchecked") T thisT = (T) this;
+		return thisT;
 	}
 
 	public String getBuildpack() {
@@ -96,7 +101,8 @@ public class CreateApplicationRequest<T extends CreateApplicationRequest<T>> {
 
 	public T withBuildpack(String buildpack) {
 		this.buildpack = buildpack;
-		return (T) this;
+		@SuppressWarnings("unchecked") T thisT = (T) this;
+		return thisT;
 	}
 
 	@JsonProperty("environment_json")
@@ -106,6 +112,7 @@ public class CreateApplicationRequest<T extends CreateApplicationRequest<T>> {
 
 	public T withEnvironment(Map<String, String> environment) {
 		this.environment = environment;
-		return (T) this;
+		@SuppressWarnings("unchecked") T thisT = (T) this;
+		return thisT;
 	}
 }
