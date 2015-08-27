@@ -19,5 +19,5 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
 /**
  * @author Eric Bottard
  */
-public class ListServiceBindingsResponse extends AbstractPaginatedResponse<ResourceResponse<ServiceBindingEntity>> {
+final class ListServiceBindingsResponse extends AbstractPaginatedResponse<ResourceResponse<ServiceBindingEntity>> {
 }

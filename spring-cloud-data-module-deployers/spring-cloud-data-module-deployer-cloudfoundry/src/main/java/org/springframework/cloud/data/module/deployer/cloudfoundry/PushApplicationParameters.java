@@ -16,7 +16,9 @@
 
 package org.springframework.cloud.data.module.deployer.cloudfoundry;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.core.io.Resource;
 
@@ -32,6 +34,8 @@ final class PushApplicationParameters {
 	private String name;
 
 	private Resource resource;
+
+	private Set<String> serviceInstanceNames = new HashSet<>();
 
 	public Map<String, String> getEnvironment() {
 		return environment;
@@ -57,6 +61,15 @@ final class PushApplicationParameters {
 
 	public PushApplicationParameters withResource(Resource resource) {
 		this.resource = resource;
+		return this;
+	}
+
+	public Set<String> getServiceInstanceNames() {
+		return serviceInstanceNames;
+	}
+
+	public PushApplicationParameters withServiceInstanceNames(Set<String> serviceInstanceNames) {
+		this.serviceInstanceNames.addAll(serviceInstanceNames);
 		return this;
 	}
 }

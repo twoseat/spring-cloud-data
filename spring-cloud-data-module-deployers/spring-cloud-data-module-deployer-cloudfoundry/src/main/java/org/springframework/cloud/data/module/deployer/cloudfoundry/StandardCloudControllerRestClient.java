@@ -56,6 +56,15 @@ final class StandardCloudControllerRestClient implements CloudControllerRestClie
 	}
 
 	@Override
+	public CreateServiceBindingResponse createServiceBinding(CreateServiceBindingRequest request) {
+		URI uri = UriComponentsBuilder.fromUri(this.endpoint)
+				.pathSegment("v2", "service_bindings")
+				.build().toUri();
+
+		return this.restOperations.postForObject(uri, request, CreateServiceBindingResponse.class);
+	}
+
+	@Override
 	public DeleteApplicationResponse deleteApplication(DeleteApplicationRequest request) {
 		URI uri = UriComponentsBuilder.fromUri(this.endpoint)
 				.pathSegment("v2", "apps", request.getId())
@@ -105,6 +114,19 @@ final class StandardCloudControllerRestClient implements CloudControllerRestClie
 				.build().toUri();
 
 		return this.restOperations.getForObject(uri, ListServiceBindingsResponse.class);
+	}
+
+	@Override
+	public ListServiceInstancesResponse listServiceInstances(ListServiceInstancesRequest request) {
+		UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUri(this.endpoint)
+				.pathSegment("v2", "service_instances")
+				.queryParam("q", "space_guid:"+ request.getSpaceId());
+		if (!StringUtils.isEmpty(request.getName())) {
+			uriComponentsBuilder.queryParam("q", "name:" + request.getName());
+		}
+		URI uri = uriComponentsBuilder.build().toUri();
+
+		return this.restOperations.getForObject(uri, ListServiceInstancesResponse.class);
 	}
 
 	@Override

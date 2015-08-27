@@ -32,6 +32,14 @@ interface CloudControllerRestClient {
 	CreateApplicationResponse createApplication(CreateApplicationRequest request);
 
 	/**
+	 * Creates a service binding to an application (given its id).
+	 * @param request the structure carrying all necessary parameters
+	 * @return a Response instance carrying all the response values expected
+	 * @throws org.springframework.web.client.RestClientException in the event of failure
+	 */
+	CreateServiceBindingResponse createServiceBinding(CreateServiceBindingRequest request);
+
+	/**
 	 * Deletes an application given its id. The application may be in any state.
 	 * @param request the structure carrying all necessary parameters
 	 * @return a Response instance carrying all the response values expected
@@ -70,6 +78,14 @@ interface CloudControllerRestClient {
 	 * @throws org.springframework.web.client.RestClientException in the event of failure
 	 */
 	ListOrganizationsResponse listOrganizations(ListOrganizationsRequest request);
+
+	/**
+	 * Lists all the known service instances (with their ids) in a given space (by id), optionally matching a name.
+	 * @param request the structure carrying all necessary parameters
+	 * @return a Response instance carrying all the response values expected
+	 * @throws org.springframework.web.client.RestClientException in the event of failure
+	 */
+	ListServiceInstancesResponse listServiceInstances(ListServiceInstancesRequest request);
 
 	/**
 	 * Lists all the known spaces (with their ids) in a given organization (given by id).

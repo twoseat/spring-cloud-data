@@ -21,7 +21,7 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
  *
  * @author Eric Bottard
  */
-public final class ServiceBindingEntity {
+final class ServiceBindingEntity {
 
 	// Nothing specific needed atm
 }

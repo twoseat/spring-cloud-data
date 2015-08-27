@@ -139,6 +139,19 @@ final class StandardCloudFoundryApplicationOperations implements CloudFoundryApp
 			return pushResponse.withError(PushApplicationResults.Error.CREATE_FAILED);
 		}
 
+		for (String serviceInstanceName: parameters.getServiceInstanceNames()) {
+			ListServiceInstancesRequest listServiceInstancesRequest = new ListServiceInstancesRequest()
+					.withName(serviceInstanceName)
+					.withSpaceId(this.spaceId);
+			List<ResourceResponse<ServiceInstanceEntity>> listServiceInstances = this.client.listServiceInstances(listServiceInstancesRequest).getResources();
+			for (ResourceResponse<ServiceInstanceEntity> serviceInstanceResource : listServiceInstances){
+				CreateServiceBindingRequest createServiceBindingRequest = new CreateServiceBindingRequest()
+						.withAppId(createResponse.getMetadata().getId())
+						.withServiceInstanceId(serviceInstanceResource.getMetadata().getId());
+				this.client.createServiceBinding(createServiceBindingRequest);
+			}
+		}
+
 		UploadBitsRequest uploadBitsRequest = new UploadBitsRequest()
 				.withId(createResponse.getMetadata().getId())
 				.withResource(parameters.getResource());

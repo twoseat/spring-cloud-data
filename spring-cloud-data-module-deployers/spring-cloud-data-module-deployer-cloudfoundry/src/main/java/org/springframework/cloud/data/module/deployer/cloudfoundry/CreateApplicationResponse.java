@@ -21,5 +21,5 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
  *
  * @author Steve Powell
  */
-public class CreateApplicationResponse extends ResourceResponse {
+final class CreateApplicationResponse extends ResourceResponse {
 }

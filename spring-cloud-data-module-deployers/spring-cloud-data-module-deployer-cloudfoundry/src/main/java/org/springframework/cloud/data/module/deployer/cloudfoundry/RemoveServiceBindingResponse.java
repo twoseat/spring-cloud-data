@@ -17,7 +17,7 @@
 package org.springframework.cloud.data.module.deployer.cloudfoundry;
 
 /**
- * Created by ericbottard on 27/08/15.
+ * @author Eric Bottard
  */
-public class RemoveServiceBindingResponse {
+final class RemoveServiceBindingResponse {
 }

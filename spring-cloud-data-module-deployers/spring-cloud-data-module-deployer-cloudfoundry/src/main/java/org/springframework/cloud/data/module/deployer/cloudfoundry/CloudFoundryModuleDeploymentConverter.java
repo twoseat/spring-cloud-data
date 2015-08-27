@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
  * @author Steve Powell
  */
 @Component
-public final class CloudFoundryModuleDeploymentConverter {
+class CloudFoundryModuleDeploymentConverter {
 
 	//TODO: validate the prefixing strategy
 	private static final String PREFIX = "spring_cloud_data_";

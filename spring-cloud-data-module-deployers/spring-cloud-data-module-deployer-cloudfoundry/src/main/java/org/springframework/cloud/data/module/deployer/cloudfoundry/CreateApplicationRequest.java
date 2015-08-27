@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Steve Powell
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CreateApplicationRequest<T extends CreateApplicationRequest<T>> {
+final class CreateApplicationRequest<T extends CreateApplicationRequest<T>> {
 
 	private String name;
 

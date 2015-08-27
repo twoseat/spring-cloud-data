@@ -19,11 +19,13 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Created by ericbottard on 27/08/15.
+ * @author Eric Bottard
  */
-public class ListServiceBindingsRequest {
+final class ListServiceBindingsRequest {
 
 	private String appId;
+
+	private String spaceId;
 
 	public String getAppId() {
 		return appId;
@@ -31,6 +33,15 @@ public class ListServiceBindingsRequest {
 
 	public ListServiceBindingsRequest withAppId(String appId) {
 		this.appId = appId;
+		return this;
+	}
+
+	public String getSpaceId() {
+		return spaceId;
+	}
+
+	public ListServiceBindingsRequest withSpaceId(String spaceId) {
+		this.spaceId = spaceId;
 		return this;
 	}
 }
