@@ -52,12 +52,7 @@ final class StandardCloudControllerRestClient implements CloudControllerRestClie
 		URI uri = UriComponentsBuilder.fromUri(this.endpoint)
 				.pathSegment("v2", "apps")
 				.build().toUri();
-		try {
-			return this.restOperations.postForObject(uri, request, CreateApplicationResponse.class);
-		}
-		catch (RestClientException _) {
-			return null;
-		}
+		return this.restOperations.postForObject(uri, request, CreateApplicationResponse.class);
 	}
 
 	@Override
@@ -129,14 +124,9 @@ final class StandardCloudControllerRestClient implements CloudControllerRestClie
 				.pathSegment("v2", "apps", request.getAppId(), "service_bindings", request.getBindingId())
 				.build().toUri();
 
-		try {
-			this.restOperations.delete(uri);
-			return new RemoveServiceBindingResponse();
-		}
-		catch (RestClientException _) {
-			return null;
-		}
-	}
+		this.restOperations.delete(uri);
+		return new RemoveServiceBindingResponse();
+}
 
 	@Override
 	public UpdateApplicationResponse updateApplication(UpdateApplicationRequest request) {
@@ -144,12 +134,7 @@ final class StandardCloudControllerRestClient implements CloudControllerRestClie
 				.pathSegment("v2", "apps", request.getId())
 				.build().toUri();
 
-		try {
-			return this.restOperations.putForObject(uri, request, UpdateApplicationResponse.class);
-		}
-		catch (RestClientException _) {
-			return null;
-		}
+		return this.restOperations.putForObject(uri, request, UpdateApplicationResponse.class);
 	}
 
 	@Override
@@ -164,13 +149,8 @@ final class StandardCloudControllerRestClient implements CloudControllerRestClie
 		payload.add("application", request.getResource());
 		payload.add("resources", new ArrayList());
 
-		try {
-			this.restOperations.put(uri, payload);
-			return new UploadBitsResponse();
-		}
-		catch (RestClientException _) {
-			return null;
-		}
+		this.restOperations.put(uri, payload);
+		return new UploadBitsResponse();
 	}
 
 }

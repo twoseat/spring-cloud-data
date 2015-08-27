@@ -40,6 +40,9 @@ public final class CloudFoundryModuleDeployer implements ModuleDeployer {
 
 	private final CloudFoundryApplicationOperations resourceClient;
 
+
+	private CloudFoundryModuleDeployerProperties properties;
+
 	@Autowired
 	public CloudFoundryModuleDeployer(CloudFoundryModuleDeploymentConverter cloudFoundryModuleDeploymentConverter,
 			CloudFoundryApplicationOperations resourceClient) {
