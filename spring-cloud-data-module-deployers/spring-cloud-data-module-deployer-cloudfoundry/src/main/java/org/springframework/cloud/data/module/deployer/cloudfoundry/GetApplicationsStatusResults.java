@@ -24,7 +24,7 @@ import java.util.Map;
  *
  * @author Steve Powell
  */
-final class GetApplicationsStatusResults {
+class GetApplicationsStatusResults {
 
 	private Map<String, ApplicationStatus> applications = new HashMap<>();
 

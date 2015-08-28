@@ -5,7 +5,7 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
  *
  * @author Steve Powell
  */
-final class ServiceInstanceEntity {
+class ServiceInstanceEntity {
 
 	// nothing needed atm
 

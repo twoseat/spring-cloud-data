@@ -19,7 +19,7 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
 /**
  * @author Eric Bottard
  */
-final class ApplicationEntity extends NamedEntity {
+class ApplicationEntity extends NamedEntity {
 	private volatile String state;
 
 	public String getState() {

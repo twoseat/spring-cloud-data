@@ -21,7 +21,7 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
  *
  * @author Steve Powell
  */
-final class ListOrganizationsRequest {
+class ListOrganizationsRequest {
 
 	private volatile String name;
 

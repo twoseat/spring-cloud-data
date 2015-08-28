@@ -24,7 +24,7 @@ import java.util.Map;
  *
  * @author Steve Powell
  */
-final class ApplicationStatus {
+class ApplicationStatus {
 
 	private volatile String id;
 

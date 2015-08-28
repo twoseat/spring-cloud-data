@@ -21,7 +21,7 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
  *
  * @author Steve Powell
  */
-final class PushApplicationResults {
+class PushApplicationResults {
 
 	enum Error {CREATE_FAILED, UPLOAD_FAILED, START_FAILED, NONE}
 

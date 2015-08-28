@@ -27,7 +27,7 @@ import org.springframework.cloud.data.module.ModuleStatus;
  *
  * @author Steve Powell
  */
-public final class CloudFoundryModuleInstanceStatus implements ModuleInstanceStatus {
+public class CloudFoundryModuleInstanceStatus implements ModuleInstanceStatus {
 
 	private final Map<String, String> attributes = new HashMap<>();
 

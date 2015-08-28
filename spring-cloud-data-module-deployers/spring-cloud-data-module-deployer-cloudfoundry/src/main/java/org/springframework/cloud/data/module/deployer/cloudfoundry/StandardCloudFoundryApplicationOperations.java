@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
  * @author Steve Powell
  */
 @Component
-final class StandardCloudFoundryApplicationOperations implements CloudFoundryApplicationOperations {
+class StandardCloudFoundryApplicationOperations implements CloudFoundryApplicationOperations {
 
 	private static final String DEFAULT_BUILDPACK = "";
 

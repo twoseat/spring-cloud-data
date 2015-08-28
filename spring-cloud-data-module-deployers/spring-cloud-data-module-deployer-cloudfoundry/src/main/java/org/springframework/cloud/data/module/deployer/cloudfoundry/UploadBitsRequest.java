@@ -23,7 +23,7 @@ import org.springframework.core.io.Resource;
  *
  * @author Steve Powell
  */
-final class UploadBitsRequest {
+class UploadBitsRequest {
 
 	private volatile String id;
 

@@ -27,7 +27,7 @@ import org.springframework.core.io.Resource;
  *
  * @author Steve Powell
  */
-final class PushApplicationParameters {
+class PushApplicationParameters {
 
 	private Map<String, String> environment;
 

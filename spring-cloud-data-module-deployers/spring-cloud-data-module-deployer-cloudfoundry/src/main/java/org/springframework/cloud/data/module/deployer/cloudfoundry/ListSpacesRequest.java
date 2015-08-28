@@ -21,7 +21,7 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
  *
  * @author Steve Powell
  */
-final class ListSpacesRequest {
+class ListSpacesRequest {
 
 	private volatile String name;
 

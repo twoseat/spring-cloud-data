@@ -35,7 +35,7 @@ import org.springframework.web.client.HttpClientErrorException;
  *
  * @author Steve Powell
  */
-final class TestApplication {
+class TestApplication {
 
 	public static void main(String[] args) {
 		try {
@@ -77,6 +77,7 @@ final class TestApplication {
 		}
 		catch (HttpClientErrorException errorException) {
 			System.err.println(errorException.getResponseBodyAsString());
+			errorException.printStackTrace();
 		}
 
 //        ModuleStatus ms = moduleDeployer.status(new ModuleDeploymentId("a", "Steve"));

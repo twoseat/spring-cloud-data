@@ -22,7 +22,7 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
  *
  * @author Steve Powell
  */
-final class GetApplicationsStatusParameters {
+class GetApplicationsStatusParameters {
 
 	private volatile String name;
 

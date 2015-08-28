@@ -33,7 +33,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @author Steve Powell
  */
 @Component
-final class StandardCloudControllerRestClient implements CloudControllerRestClient {
+class StandardCloudControllerRestClient implements CloudControllerRestClient {
 
 	private final URI endpoint;
 

@@ -34,12 +34,13 @@ import org.springframework.stereotype.Component;
  * @author Steve Powell
  */
 @Component
-public final class CloudFoundryModuleDeployer implements ModuleDeployer {
+public class CloudFoundryModuleDeployer implements ModuleDeployer {
 
 	private final CloudFoundryModuleDeploymentConverter cloudFoundryModuleDeploymentConverter;
 
 	private final CloudFoundryApplicationOperations resourceClient;
 
+	@Autowired
 	private CloudFoundryModuleDeployerProperties properties;
 
 	@Autowired
@@ -59,6 +60,7 @@ public final class CloudFoundryModuleDeployer implements ModuleDeployer {
 						.withName(applicationName)
 						.withResource(this.cloudFoundryModuleDeploymentConverter.toModuleLauncherResource(definition))
 						.withEnvironment(this.cloudFoundryModuleDeploymentConverter.toModuleLauncherEnvironment(request))
+						.withServiceInstanceNames(this.properties.getServices())
 		);
 		if (response.getError() == PushApplicationResults.Error.CREATE_FAILED) {
 			throw new IllegalStateException("Module " + moduleDeploymentId + " is already deployed");

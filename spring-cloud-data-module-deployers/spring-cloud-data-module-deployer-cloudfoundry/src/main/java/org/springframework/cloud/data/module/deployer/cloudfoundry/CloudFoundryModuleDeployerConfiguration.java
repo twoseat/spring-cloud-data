@@ -21,6 +21,7 @@ import java.net.URI;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -45,6 +46,7 @@ import org.springframework.web.client.RestClientException;
 @ComponentScan
 @Configuration
 @EnableAutoConfiguration(exclude = OAuth2AutoConfiguration.class)
+@EnableConfigurationProperties(CloudFoundryModuleDeployerProperties.class)
 public class CloudFoundryModuleDeployerConfiguration {
 
 	@Bean

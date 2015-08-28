@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * @author Steve Powell
  */
-final class CreateServiceBindingRequest {
+class CreateServiceBindingRequest {
 
 	private String appId;
 
@@ -16,11 +16,11 @@ final class CreateServiceBindingRequest {
 
 	private String serviceInstanceId;
 
+	@JsonProperty("app_guid")
 	public String getAppId() {
 		return appId;
 	}
 
-	@JsonProperty("app_guid")
 	public CreateServiceBindingRequest withAppId(String appId) {
 		this.appId = appId;
 		return this;

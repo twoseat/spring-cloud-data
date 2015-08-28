@@ -19,7 +19,7 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
 /**
  * @author Eric Bottard
  */
-final class RemoveServiceBindingRequest {
+class RemoveServiceBindingRequest {
 	private String bindingId;
 
 	private String appId;

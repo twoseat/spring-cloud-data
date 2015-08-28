@@ -38,7 +38,7 @@ class ResourceResponse<E> {
 		this.metadata = metadata;
 	}
 
-	static final class Metadata {
+	static class Metadata {
 
 		private volatile String id;
 

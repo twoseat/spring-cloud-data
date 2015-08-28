@@ -23,5 +23,5 @@ import java.util.HashMap;
  *
  * @author Steve Powell
  */
-final class GetApplicationStatisticsResponse extends HashMap<String, ApplicationInstanceStatus> {
+class GetApplicationStatisticsResponse extends HashMap<String, ApplicationInstanceStatus> {
 }

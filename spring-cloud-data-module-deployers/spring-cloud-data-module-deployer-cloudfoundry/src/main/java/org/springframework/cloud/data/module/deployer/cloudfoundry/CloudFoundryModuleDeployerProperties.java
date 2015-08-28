@@ -16,18 +16,25 @@
 
 package org.springframework.cloud.data.module.deployer.cloudfoundry;
 
+import java.util.Collections;
+import java.util.Set;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 /**
- * Created by ericbottard on 27/08/15.
+ * @author Eric Bottard
  */
+@ConfigurationProperties
 public class CloudFoundryModuleDeployerProperties {
 
-	private String[] services = new String[] {"my-redis"};
+	private Set<String> services = Collections.singleton("redis");
 
-	public String[] getServices() {
+	public Set<String> getServices() {
 		return services;
 	}
 
-	public void setServices(String[] services) {
+	public void setServices(Set<String> services) {
 		this.services = services;
 	}
+
 }

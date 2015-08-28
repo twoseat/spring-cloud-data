@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * @author Eric Bottard
  */
-final class ListServiceBindingsRequest {
+class ListServiceBindingsRequest {
 
 	private String appId;
 

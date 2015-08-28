@@ -5,7 +5,7 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
  *
  * @author Steve Powell
  */
-final class UpdateApplicationRequest extends CreateApplicationRequest<UpdateApplicationRequest> {
+class UpdateApplicationRequest extends CreateApplicationRequest<UpdateApplicationRequest> {
 
 	private String id;
 

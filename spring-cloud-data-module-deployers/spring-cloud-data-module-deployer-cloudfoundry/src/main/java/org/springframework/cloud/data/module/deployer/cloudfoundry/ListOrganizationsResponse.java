@@ -21,5 +21,5 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
  *
  * @author Steve Powell
  */
-final class ListOrganizationsResponse extends AbstractPaginatedResponse<ResourceResponse<NamedEntity>> {
+class ListOrganizationsResponse extends AbstractPaginatedResponse<ResourceResponse<NamedEntity>> {
 }

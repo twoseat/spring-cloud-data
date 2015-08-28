@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @author Steve Powell
  */
-final class ApplicationInstanceStatus {
+class ApplicationInstanceStatus {
 
 	private volatile String state;
 
@@ -48,7 +48,7 @@ final class ApplicationInstanceStatus {
 		this.statistics = statistics;
 	}
 
-	static final class Statistics {
+	static class Statistics {
 
 		private volatile Usage usage;
 
@@ -76,7 +76,7 @@ final class ApplicationInstanceStatus {
 			this.usage = usage;
 		}
 
-		static final class Usage {
+		static class Usage {
 
 			private volatile Integer disk;
 

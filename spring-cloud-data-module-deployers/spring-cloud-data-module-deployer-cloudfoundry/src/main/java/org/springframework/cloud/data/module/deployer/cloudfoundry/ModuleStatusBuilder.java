@@ -29,7 +29,7 @@ import org.springframework.cloud.data.module.ModuleStatus;
  * @author Ben Hale
  * @author Steve Powell
  */
-final class ModuleStatusBuilder {
+class ModuleStatusBuilder {
 
 	private volatile ApplicationStatus applicationStatus;
 

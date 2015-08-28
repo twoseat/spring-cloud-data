@@ -21,7 +21,7 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
  *
  * @author Steve Powell
  */
-final class DeleteApplicationRequest {
+class DeleteApplicationRequest {
 
 	private volatile String id;
 

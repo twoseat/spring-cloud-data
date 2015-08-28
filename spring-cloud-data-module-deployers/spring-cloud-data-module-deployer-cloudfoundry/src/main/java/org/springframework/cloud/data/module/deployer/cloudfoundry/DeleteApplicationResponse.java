@@ -21,7 +21,7 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
  *
  * @author Steve Powell
  */
-final class DeleteApplicationResponse {
+class DeleteApplicationResponse {
 
 	private volatile boolean deleted;
 
