@@ -17,6 +17,7 @@
 package org.springframework.cloud.data.module.deployer.cloudfoundry;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -25,9 +26,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Eric Bottard
  */
 @ConfigurationProperties
-public class CloudFoundryModuleDeployerProperties {
+class CloudFoundryModuleDeployerProperties {
 
-	private Set<String> services = Collections.singleton("redis");
+	private Set<String> services = setOf(new HashSet<String>(), "redis");
 
 	public Set<String> getServices() {
 		return services;
@@ -37,4 +38,9 @@ public class CloudFoundryModuleDeployerProperties {
 		this.services = services;
 	}
 
+	@SafeVarargs
+	private static <T> Set<T> setOf(Set<T> set, T... elements) {
+		Collections.addAll(set, elements);
+		return set;
+	}
 }

@@ -23,11 +23,11 @@ import java.util.Set;
 import org.springframework.core.io.Resource;
 
 /**
- * Parameters for {@link CloudFoundryApplicationOperations#pushApplication(PushApplicationParameters) pushApplication()} operation.
+ * Parameters for {@link CloudFoundryApplicationOperations#pushBindAndStartApplication(PushBindAndStartApplicationParameters) pushBindAndStartApplication()} operation.
  *
  * @author Steve Powell
  */
-class PushApplicationParameters {
+class PushBindAndStartApplicationParameters {
 
 	private Map<String, String> environment;
 
@@ -41,7 +41,7 @@ class PushApplicationParameters {
 		return environment;
 	}
 
-	public PushApplicationParameters withEnvironment(Map<String, String> environment) {
+	public PushBindAndStartApplicationParameters withEnvironment(Map<String, String> environment) {
 		this.environment = environment;
 		return this;
 	}
@@ -50,7 +50,7 @@ class PushApplicationParameters {
 		return name;
 	}
 
-	public PushApplicationParameters withName(String name) {
+	public PushBindAndStartApplicationParameters withName(String name) {
 		this.name = name;
 		return this;
 	}
@@ -59,7 +59,7 @@ class PushApplicationParameters {
 		return resource;
 	}
 
-	public PushApplicationParameters withResource(Resource resource) {
+	public PushBindAndStartApplicationParameters withResource(Resource resource) {
 		this.resource = resource;
 		return this;
 	}
@@ -68,7 +68,7 @@ class PushApplicationParameters {
 		return serviceInstanceNames;
 	}
 
-	public PushApplicationParameters withServiceInstanceNames(Set<String> serviceInstanceNames) {
+	public PushBindAndStartApplicationParameters withServiceInstanceNames(Set<String> serviceInstanceNames) {
 		this.serviceInstanceNames.addAll(serviceInstanceNames);
 		return this;
 	}

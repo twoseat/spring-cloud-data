@@ -10,7 +10,7 @@ import org.springframework.web.client.RestClientException;
  *
  * @author Eric Bottard
  */
-public interface ExtendedOAuth2RestOperations extends OAuth2RestOperations {
+interface ExtendedOAuth2RestOperations extends OAuth2RestOperations {
 
 	<T> T putForObject(URI uri, Object request, Class<T> responseType) throws RestClientException;
 

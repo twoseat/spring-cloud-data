@@ -19,9 +19,6 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
 import java.net.URI;
 import java.util.ArrayList;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
@@ -32,16 +29,13 @@ import org.springframework.web.util.UriComponentsBuilder;
  *
  * @author Steve Powell
  */
-@Component
 class StandardCloudControllerRestClient implements CloudControllerRestClient {
 
 	private final URI endpoint;
 
 	private final ExtendedOAuth2RestOperations restOperations;
 
-	@Autowired
-	StandardCloudControllerRestClient(@Value("${cloudfoundry.api.endpoint}") URI endpoint,
-			ExtendedOAuth2RestOperations restOperations) {
+	StandardCloudControllerRestClient(URI endpoint, ExtendedOAuth2RestOperations restOperations) {
 		this.endpoint = endpoint;
 		this.restOperations = restOperations;
 	}
@@ -120,7 +114,7 @@ class StandardCloudControllerRestClient implements CloudControllerRestClient {
 	public ListServiceInstancesResponse listServiceInstances(ListServiceInstancesRequest request) {
 		UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUri(this.endpoint)
 				.pathSegment("v2", "service_instances")
-				.queryParam("q", "space_guid:"+ request.getSpaceId());
+				.queryParam("q", "space_guid:" + request.getSpaceId());
 		if (!StringUtils.isEmpty(request.getName())) {
 			uriComponentsBuilder.queryParam("q", "name:" + request.getName());
 		}

@@ -18,10 +18,12 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
 
 import java.net.URI;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.data.module.deployer.ModuleDeployer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -50,9 +52,33 @@ import org.springframework.web.client.RestClientException;
 public class CloudFoundryModuleDeployerConfiguration {
 
 	@Bean
-	public ExtendedOAuth2RestOperations oauth2RestTemplate(OAuth2ClientContext oauth2ClientContext,
+	CloudControllerRestClient cloudControllerRestClient(
+			@Value("${cloudfoundry.api.endpoint}") URI endpoint,
+			ExtendedOAuth2RestOperations restOperations) {
+		return new StandardCloudControllerRestClient(endpoint, restOperations);
+	}
+
+	@Bean
+	CloudFoundryApplicationOperations cloudFoundryApplicationOperations(
+			CloudControllerRestClient client,
+			@Value("${cloudfoundry.organization}") String organizationName,
+			@Value("${cloudfoundry.space}") String spaceName) {
+		return new StandardCloudFoundryApplicationOperations(client, organizationName, spaceName);
+	}
+
+	@Bean
+	ModuleDeployer moduleDeployer(
+			CloudFoundryModuleDeployerProperties properties,
+			CloudFoundryModuleDeploymentConverter converter,
+			CloudFoundryApplicationOperations applicationOperations) {
+		return new CloudFoundryModuleDeployer(properties, converter, applicationOperations);
+	}
+
+	@Bean
+	public ExtendedOAuth2RestOperations oauth2RestTemplate(
+			OAuth2ClientContext clientContext,
 			OAuth2ProtectedResourceDetails details) {
-		return new ExtendedOAuth2RestTemplate(details, oauth2ClientContext);
+		return new ExtendedOAuth2RestTemplate(details, clientContext);
 	}
 
 	@Bean

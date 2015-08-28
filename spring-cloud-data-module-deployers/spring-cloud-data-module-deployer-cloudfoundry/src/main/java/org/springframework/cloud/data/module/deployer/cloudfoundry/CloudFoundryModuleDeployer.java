@@ -19,13 +19,11 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.data.core.ModuleDefinition;
 import org.springframework.cloud.data.core.ModuleDeploymentId;
 import org.springframework.cloud.data.core.ModuleDeploymentRequest;
 import org.springframework.cloud.data.module.ModuleStatus;
 import org.springframework.cloud.data.module.deployer.ModuleDeployer;
-import org.springframework.stereotype.Component;
 
 /**
  * A {@link ModuleDeployer} which deploys modules as applications running in a space in CloudFoundry.
@@ -33,21 +31,21 @@ import org.springframework.stereotype.Component;
  * @author Paul Harris
  * @author Steve Powell
  */
-@Component
 public class CloudFoundryModuleDeployer implements ModuleDeployer {
 
 	private final CloudFoundryModuleDeploymentConverter cloudFoundryModuleDeploymentConverter;
 
 	private final CloudFoundryApplicationOperations resourceClient;
 
-	@Autowired
 	private CloudFoundryModuleDeployerProperties properties;
 
-	@Autowired
-	public CloudFoundryModuleDeployer(CloudFoundryModuleDeploymentConverter cloudFoundryModuleDeploymentConverter,
-			CloudFoundryApplicationOperations resourceClient) {
-		this.cloudFoundryModuleDeploymentConverter = cloudFoundryModuleDeploymentConverter;
-		this.resourceClient = resourceClient;
+	public CloudFoundryModuleDeployer(
+			CloudFoundryModuleDeployerProperties properties,
+			CloudFoundryModuleDeploymentConverter converter,
+			CloudFoundryApplicationOperations applicationOperations) {
+		this.properties = properties;
+		this.cloudFoundryModuleDeploymentConverter = converter;
+		this.resourceClient = applicationOperations;
 	}
 
 	@Override
@@ -56,13 +54,13 @@ public class CloudFoundryModuleDeployer implements ModuleDeployer {
 		ModuleDeploymentId moduleDeploymentId = new ModuleDeploymentId(definition.getGroup(), definition.getLabel());
 		String applicationName = this.cloudFoundryModuleDeploymentConverter.toApplicationName(moduleDeploymentId);
 
-		PushApplicationResults response = this.resourceClient.pushApplication(new PushApplicationParameters()
+		PushBindAndStartApplicationResults response = this.resourceClient.pushBindAndStartApplication(new PushBindAndStartApplicationParameters()
 						.withName(applicationName)
 						.withResource(this.cloudFoundryModuleDeploymentConverter.toModuleLauncherResource(definition))
 						.withEnvironment(this.cloudFoundryModuleDeploymentConverter.toModuleLauncherEnvironment(request))
 						.withServiceInstanceNames(this.properties.getServices())
 		);
-		if (response.getError() == PushApplicationResults.Error.CREATE_FAILED) {
+		if (response.getError() == PushBindAndStartApplicationResults.Error.CREATE_FAILED) {
 			throw new IllegalStateException("Module " + moduleDeploymentId + " is already deployed");
 		}
 		return moduleDeploymentId;

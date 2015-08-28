@@ -18,17 +18,12 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 /**
  * Implementation of high-level operations on applications, limited to those
  * operations required by the {@link CloudFoundryModuleDeployer}.
  *
  * @author Steve Powell
  */
-@Component
 class StandardCloudFoundryApplicationOperations implements CloudFoundryApplicationOperations {
 
 	private static final String DEFAULT_BUILDPACK = "";
@@ -39,10 +34,7 @@ class StandardCloudFoundryApplicationOperations implements CloudFoundryApplicati
 
 	private final String spaceId;
 
-	@Autowired
-	StandardCloudFoundryApplicationOperations(CloudControllerRestClient client,
-			@Value("${cloudfoundry.organization}") String organizationName,
-			@Value("${cloudfoundry.space}") String spaceName) {
+	StandardCloudFoundryApplicationOperations(CloudControllerRestClient client, String organizationName, String spaceName) {
 		this.client = client;
 		this.spaceId = getSpaceId(client, organizationName, spaceName);
 	}
@@ -67,8 +59,8 @@ class StandardCloudFoundryApplicationOperations implements CloudFoundryApplicati
 		List<ResourceResponse<ServiceBindingEntity>> serviceBindings = this.client.listServiceBindings(listServiceBindingsRequest).getResources();
 		for (ResourceResponse<ServiceBindingEntity> serviceBinding : serviceBindings) {
 			this.client.removeServiceBinding(new RemoveServiceBindingRequest()
-					.withAppId(appId)
-					.withBindingId(serviceBinding.getMetadata().getId())
+							.withAppId(appId)
+							.withBindingId(serviceBinding.getMetadata().getId())
 			);
 		}
 
@@ -82,8 +74,7 @@ class StandardCloudFoundryApplicationOperations implements CloudFoundryApplicati
 	}
 
 	@Override
-	public GetApplicationsStatusResults getApplicationsStatus(
-			GetApplicationsStatusParameters parameters) {
+	public GetApplicationsStatusResults getApplicationsStatus(GetApplicationsStatusParameters parameters) {
 		ListApplicationsRequest listRequest = new ListApplicationsRequest()
 				.withSpaceId(this.spaceId);
 
@@ -122,8 +113,8 @@ class StandardCloudFoundryApplicationOperations implements CloudFoundryApplicati
 	}
 
 	@Override
-	public PushApplicationResults pushApplication(PushApplicationParameters parameters) {
-		PushApplicationResults pushResponse = new PushApplicationResults();
+	public PushBindAndStartApplicationResults pushBindAndStartApplication(PushBindAndStartApplicationParameters parameters) {
+		PushBindAndStartApplicationResults pushResponse = new PushBindAndStartApplicationResults();
 
 		CreateApplicationRequest createRequest = new CreateApplicationRequest()
 				.withSpaceId(this.spaceId)
@@ -136,15 +127,15 @@ class StandardCloudFoundryApplicationOperations implements CloudFoundryApplicati
 
 		CreateApplicationResponse createResponse = this.client.createApplication(createRequest);
 		if (createResponse == null) {
-			return pushResponse.withError(PushApplicationResults.Error.CREATE_FAILED);
+			return pushResponse.withError(PushBindAndStartApplicationResults.Error.CREATE_FAILED);
 		}
 
-		for (String serviceInstanceName: parameters.getServiceInstanceNames()) {
+		for (String serviceInstanceName : parameters.getServiceInstanceNames()) {
 			ListServiceInstancesRequest listServiceInstancesRequest = new ListServiceInstancesRequest()
 					.withName(serviceInstanceName)
 					.withSpaceId(this.spaceId);
 			List<ResourceResponse<ServiceInstanceEntity>> listServiceInstances = this.client.listServiceInstances(listServiceInstancesRequest).getResources();
-			for (ResourceResponse<ServiceInstanceEntity> serviceInstanceResource : listServiceInstances){
+			for (ResourceResponse<ServiceInstanceEntity> serviceInstanceResource : listServiceInstances) {
 				CreateServiceBindingRequest createServiceBindingRequest = new CreateServiceBindingRequest()
 						.withAppId(createResponse.getMetadata().getId())
 						.withServiceInstanceId(serviceInstanceResource.getMetadata().getId());
@@ -158,7 +149,7 @@ class StandardCloudFoundryApplicationOperations implements CloudFoundryApplicati
 
 		UploadBitsResponse uploadBitsResponse = this.client.uploadBits(uploadBitsRequest);
 		if (uploadBitsResponse == null) {
-			return pushResponse.withError(PushApplicationResults.Error.UPLOAD_FAILED);
+			return pushResponse.withError(PushBindAndStartApplicationResults.Error.UPLOAD_FAILED);
 		}
 
 		UpdateApplicationRequest updateRequest = new UpdateApplicationRequest()
@@ -166,10 +157,10 @@ class StandardCloudFoundryApplicationOperations implements CloudFoundryApplicati
 				.withState("STARTED");
 		UpdateApplicationResponse updateResponse = this.client.updateApplication(updateRequest);
 		if (updateResponse == null) {
-			return pushResponse.withError(PushApplicationResults.Error.START_FAILED);
+			return pushResponse.withError(PushBindAndStartApplicationResults.Error.START_FAILED);
 		}
 
-		return pushResponse.withError(PushApplicationResults.Error.NONE);
+		return pushResponse.withError(PushBindAndStartApplicationResults.Error.NONE);
 	}
 
 	private static String getSpaceId(CloudControllerRestClient client, String organizationName, String spaceName) {

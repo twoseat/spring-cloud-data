@@ -16,8 +16,6 @@
 
 package org.springframework.cloud.data.module.deployer.cloudfoundry;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * @author Eric Bottard
  */

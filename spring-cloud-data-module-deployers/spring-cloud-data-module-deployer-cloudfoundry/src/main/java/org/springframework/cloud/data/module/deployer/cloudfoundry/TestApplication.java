@@ -107,10 +107,10 @@ class TestApplication {
 //				.withResource(new FileSystemResource("/Users/spowell/Downloads/java-main-application-1.0.0.BUILD-SNAPSHOT.jar")));
 
 //		CloudFoundryApplicationOperations resourceClient = applicationContext.getBean(CloudFoundryApplicationOperations.class);
-//		PushApplicationParameters pushApplicationRequest = new PushApplicationParameters().withName("hello")
+//		PushBindAndStartApplicationParameters pushApplicationRequest = new PushBindAndStartApplicationParameters().withName("hello")
 //				.withResource(new FileSystemResource("/Users/spowell/Downloads/java-main-application-1.0.0.BUILD-SNAPSHOT.jar"))
 //				.withEnvironment(Collections.singletonMap("foo", "bar"));
-//		resourceClient.pushApplication(pushApplicationRequest);
+//		resourceClient.pushBindAndStartApplication(pushApplicationRequest);
 
 //        moduleDeployer.undeploy(??);
 

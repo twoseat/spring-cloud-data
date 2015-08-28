@@ -17,11 +17,11 @@
 package org.springframework.cloud.data.module.deployer.cloudfoundry;
 
 /**
- * Results from {@link CloudFoundryApplicationOperations#pushApplication(PushApplicationParameters) pushApplication()} operation.
+ * Results from {@link CloudFoundryApplicationOperations#pushBindAndStartApplication(PushBindAndStartApplicationParameters) pushBindAndStartApplication()} operation.
  *
  * @author Steve Powell
  */
-class PushApplicationResults {
+class PushBindAndStartApplicationResults {
 
 	enum Error {CREATE_FAILED, UPLOAD_FAILED, START_FAILED, NONE}
 
@@ -31,7 +31,7 @@ class PushApplicationResults {
 		return error;
 	}
 
-	public PushApplicationResults withError(Error error) {
+	public PushBindAndStartApplicationResults withError(Error error) {
 		this.error = error;
 		return this;
 	}

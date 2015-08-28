@@ -21,7 +21,7 @@ package org.springframework.cloud.data.module.deployer.cloudfoundry;
  *
  * @author Steve Powell
  */
-public interface CloudFoundryApplicationOperations {
+interface CloudFoundryApplicationOperations {
 
 	/**
 	 * Deletes an application by name.
@@ -38,10 +38,10 @@ public interface CloudFoundryApplicationOperations {
 	GetApplicationsStatusResults getApplicationsStatus(GetApplicationsStatusParameters parameters);
 
 	/**
-	 * Creates and starts an application. Is given name, bits resource and environment.
+	 * Creates and starts an application. Is given name, bits resource, service-instances to bind and environment.
 	 * @param parameters the push application parameters
 	 * @return a Response instance carrying an indication of failure reason (if any).
 	 */
-	PushApplicationResults pushApplication(PushApplicationParameters parameters);
+	PushBindAndStartApplicationResults pushBindAndStartApplication(PushBindAndStartApplicationParameters parameters);
 
 }
