@@ -44,6 +44,7 @@
 				<version>2.10</version>
 				<executions>
 					<execution>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>copy</goal>
 						</goals>

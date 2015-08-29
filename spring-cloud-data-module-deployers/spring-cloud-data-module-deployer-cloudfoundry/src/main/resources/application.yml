@@ -2,7 +2,7 @@
 cloudfoundry:
   api:
     endpoint: https://api.${host}.springapps.io
-  moduleLauncherLocation:
+  moduleLauncherLocation: classpath:spring-cloud-stream-module-launcher.jar
   organization: p-spring-xd
   space: p-spring-xd
 security:

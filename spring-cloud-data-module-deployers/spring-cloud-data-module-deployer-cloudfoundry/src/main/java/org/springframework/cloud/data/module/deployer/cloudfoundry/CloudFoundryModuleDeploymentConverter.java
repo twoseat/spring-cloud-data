@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.data.core.ModuleDefinition;
 import org.springframework.cloud.data.core.ModuleDeploymentId;
 import org.springframework.cloud.data.core.ModuleDeploymentRequest;
+import org.springframework.cloud.data.module.deployer.ModuleArgumentQualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
@@ -71,10 +72,21 @@ class CloudFoundryModuleDeploymentConverter {
 	Map<String, String> toModuleLauncherEnvironment(ModuleDeploymentRequest moduleDeploymentRequest) {
 		HashMap<String, String> environment = new HashMap<>();
 		environment.put("modules", moduleDeploymentRequest.getCoordinates().toString());
-		for (Map.Entry<String, String> entry : moduleDeploymentRequest.getDefinition().getParameters().entrySet()) {
-			environment.put(String.format("arguments.%d.%s", 0, entry.getKey()), entry.getValue());
+		environment.putAll(ModuleArgumentQualifier.qualifyArgs(0, moduleDeploymentRequest.getDefinition().getParameters()));
+		environment.putAll(ModuleArgumentQualifier.qualifyArgs(0, moduleDeploymentRequest.getDeploymentProperties()));
+		return toEnvironmentVariables(environment);
+	}
+
+	/**
+	 * Turn a set of arguments into an environment variables compatible form, that is turning them to capital case
+	 * and changing dots to underscores.
+	 */
+	private Map<String, String> toEnvironmentVariables(Map<String, String> args) {
+		Map<String, String> env = new HashMap<>(args.size());
+		for (Map.Entry<String, String> entry : args.entrySet()) {
+			env.put(entry.getKey().toUpperCase().replace('.', '_'), entry.getValue());
 		}
-		return environment;
+		return env;
 	}
 
 	private static String moduleIdString(String applicationName) {

@@ -52,14 +52,14 @@ import org.springframework.web.client.RestClientException;
 public class CloudFoundryModuleDeployerConfiguration {
 
 	@Bean
-	public CloudControllerRestClient cloudControllerRestClient(
+	CloudControllerRestClient cloudControllerRestClient(
 			@Value("${cloudfoundry.api.endpoint}") URI endpoint,
 			ExtendedOAuth2RestOperations restOperations) {
 		return new StandardCloudControllerRestClient(endpoint, restOperations);
 	}
 
 	@Bean
-	public CloudFoundryApplicationOperations cloudFoundryApplicationOperations(
+	CloudFoundryApplicationOperations cloudFoundryApplicationOperations(
 			CloudControllerRestClient client,
 			@Value("${cloudfoundry.organization}") String organizationName,
 			@Value("${cloudfoundry.space}") String spaceName) {
