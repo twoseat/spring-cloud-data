@@ -16,7 +16,7 @@
 
 package org.springframework.cloud.dataflow.module.deployer.cloudfoundry;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,10 +32,9 @@ import org.springframework.core.io.Resource;
 class CloudFoundryModuleDeployerProperties {
 
 	/**
-	 * The names of services to bind to each application deployed as a module.
-	 * This should typically contain a service capable of playing the role of a binding transport.
+	 * Location of the CloudFoundry REST API endpoint to use.
 	 */
-	private Set<String> services = new HashSet<>(Arrays.asList("redis"));
+	private URI apiEndpoint;
 
 	/**
 	 * The domain to use when mapping routes for applications.
@@ -43,9 +42,25 @@ class CloudFoundryModuleDeployerProperties {
 	private String domain;
 
 	/**
+	 * Location of the ModuleLauncher uber-jar to be uploaded.
+	 */
+	private Resource moduleLauncherLocation = new ClassPathResource("spring-cloud-stream-module-launcher.jar");
+
+	/**
 	 * The organization to use when registering new applications.
 	 */
 	private String organization;
+
+	/**
+	 * Password to use when accessing CloudController.
+	 */
+	private String password;
+
+	/**
+	 * The names of services to bind to each application deployed as a module.
+	 * This should typically contain a service capable of playing the role of a binding transport.
+	 */
+	private Set<String> services = new HashSet<>(Arrays.asList("redis"));
 
 	/**
 	 * The space to use when registering new applications.
@@ -53,60 +68,16 @@ class CloudFoundryModuleDeployerProperties {
 	private String space;
 
 	/**
-	 * Location of the ModuleLauncher uber-jar to be uploaded.
-	 */
-	private Resource moduleLauncherLocation = new ClassPathResource("spring-cloud-stream-module-launcher.jar");
-
-	/**
-	 * Location of the CloudFoundry REST API endpoint to use.
-	 */
-	private URL apiEndpoint;
-
-	/**
-	 * Username to use to authenticate against the Cloud Foundry API.
+	 * Username to use when accessing CloudController.
 	 */
 	private String username;
 
-	/**
-	 * Password to use to authenticate against the Cloud Foundry API.
-	 */
-	private String password;
-
-	/**
-	 * Allow operation using self-signed certificates.
-	 */
-	private boolean skipSslValidation = false;
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public URL getApiEndpoint() {
+	public URI getApiEndpoint() {
 		return apiEndpoint;
 	}
 
-	public void setApiEndpoint(URL apiEndpoint) {
+	public void setApiEndpoint(URI apiEndpoint) {
 		this.apiEndpoint = apiEndpoint;
-	}
-
-	public Set<String> getServices() {
-		return services;
-	}
-
-	public void setServices(Set<String> services) {
-		this.services = services;
 	}
 
 	public String getDomain() {
@@ -117,12 +88,36 @@ class CloudFoundryModuleDeployerProperties {
 		this.domain = domain;
 	}
 
+	public Resource getModuleLauncherLocation() {
+		return moduleLauncherLocation;
+	}
+
+	public void setModuleLauncherLocation(Resource moduleLauncherLocation) {
+		this.moduleLauncherLocation = moduleLauncherLocation;
+	}
+
 	public String getOrganization() {
 		return organization;
 	}
 
 	public void setOrganization(String organization) {
 		this.organization = organization;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Set<String> getServices() {
+		return services;
+	}
+
+	public void setServices(Set<String> services) {
+		this.services = services;
 	}
 
 	public String getSpace() {
@@ -133,19 +128,11 @@ class CloudFoundryModuleDeployerProperties {
 		this.space = space;
 	}
 
-	public boolean isSkipSslValidation() {
-		return skipSslValidation;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setSkipSslValidation(boolean skipSslValidation) {
-		this.skipSslValidation = skipSslValidation;
-	}
-
-	public Resource getModuleLauncherLocation() {
-		return moduleLauncherLocation;
-	}
-
-	public void setModuleLauncherLocation(Resource moduleLauncherLocation) {
-		this.moduleLauncherLocation = moduleLauncherLocation;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }
