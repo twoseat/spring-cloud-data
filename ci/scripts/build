@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -e -x
+
+pushd spring-cloud-dataflow
+  mvn clean package
+popd

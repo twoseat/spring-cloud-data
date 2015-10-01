@@ -1,0 +1,15 @@
+---
+resources:
+- name: spring-cloud-dataflow
+  type: git
+  source:
+    uri: https://github.com/twoseat/spring-cloud-dataflow.git
+    branch: ci
+
+jobs:
+- name: build
+  plan:
+  - get: spring-cloud-dataflow
+    trigger: true
+  - task: maven
+    file: spring-cloud-dataflow/ci/build.yml
