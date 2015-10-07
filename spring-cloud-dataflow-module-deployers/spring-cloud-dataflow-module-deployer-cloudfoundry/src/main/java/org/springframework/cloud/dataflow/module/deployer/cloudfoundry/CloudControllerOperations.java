@@ -24,14 +24,6 @@ package org.springframework.cloud.dataflow.module.deployer.cloudfoundry;
 interface CloudControllerOperations {
 
 	/**
-	 * Lists all the routes for the given domain and host.
-	 * @param request the structure carrying all necessary parameters
-	 * @return a Response instance carrying all the response values expected
-	 * @throws org.springframework.web.client.RestClientException in the event of failure
-	 */
-	Responses.ListRoutes listRoutes(Requests.ListRoutes request);
-
-	/**
 	 * Creates an application definition and returns its id.
 	 * @param request the structure carrying all necessary parameters
 	 * @return a Response instance carrying all the response values expected
@@ -96,20 +88,28 @@ interface CloudControllerOperations {
 	Responses.ListApplications listApplications(Requests.ListApplications request);
 
 	/**
-	 * Lists services bindings for a given application.
-	 * @param request the structure carrying all necessary parameters
-	 * @return a Response instance carrying all the response values expected
-	 * @throws org.springframework.web.client.RestClientException in the event of failure
-	 */
-	Responses.ListServiceBindings listServiceBindings(Requests.ListServiceBindings request);
-
-	/**
 	 * Lists all the known organizations (with their ids).
 	 * @param request the structure carrying all necessary parameters
 	 * @return a Response instance carrying all the response values expected
 	 * @throws org.springframework.web.client.RestClientException in the event of failure
 	 */
 	Responses.ListOrganizations listOrganizations(Requests.ListOrganizations request);
+
+	/**
+	 * Lists all the routes for the given domain and host.
+	 * @param request the structure carrying all necessary parameters
+	 * @return a Response instance carrying all the response values expected
+	 * @throws org.springframework.web.client.RestClientException in the event of failure
+	 */
+	Responses.ListRoutes listRoutes(Requests.ListRoutes request);
+
+	/**
+	 * Lists services bindings for a given application.
+	 * @param request the structure carrying all necessary parameters
+	 * @return a Response instance carrying all the response values expected
+	 * @throws org.springframework.web.client.RestClientException in the event of failure
+	 */
+	Responses.ListServiceBindings listServiceBindings(Requests.ListServiceBindings request);
 
 	/**
 	 * Lists all the known service instances (with their ids) in a given space (by id), optionally matching a name.
@@ -152,20 +152,20 @@ interface CloudControllerOperations {
 	Responses.RemoveServiceBinding removeServiceBinding(Requests.RemoveServiceBinding request);
 
 	/**
-	 * Uploads the bits required for an application (identified by its id) to run.
-	 * @param request the structure carrying all necessary parameters
-	 * @return a Response instance carrying all the response values expected
-	 * @throws org.springframework.web.client.RestClientException in the event of failure
-	 */
-	Responses.UploadBits uploadBits(Requests.UploadBits request);
-
-	/**
 	 * Updates the state of an application (given by its id), for example, to start it.
 	 * @param request the structure carrying all necessary parameters
 	 * @return a Response instance carrying all the response values expected
 	 * @throws org.springframework.web.client.RestClientException in the event of failure
 	 */
 	Responses.UpdateApplication updateApplication(Requests.UpdateApplication request);
+
+	/**
+	 * Uploads the bits required for an application (identified by its id) to run.
+	 * @param request the structure carrying all necessary parameters
+	 * @return a Response instance carrying all the response values expected
+	 * @throws org.springframework.web.client.RestClientException in the event of failure
+	 */
+	Responses.UploadBits uploadBits(Requests.UploadBits request);
 
 	/**
 	 * Un-map an existing route from an application.

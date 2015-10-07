@@ -39,9 +39,9 @@ class CloudFoundryApplicationTemplate implements CloudFoundryApplicationOperatio
 
 	private final CloudControllerOperations client;
 
-	private final String spaceId;
-
 	private final String domainId;
+
+	private final String spaceId;
 
 	CloudFoundryApplicationTemplate(CloudControllerOperations client, String organizationName, String spaceName, String domain) {
 		this.client = client;
@@ -99,30 +99,6 @@ class CloudFoundryApplicationTemplate implements CloudFoundryApplicationOperatio
 		}
 
 		return response;
-	}
-
-	private Map<String, String> safeGetApplicationEnvironment(String applicationId) {
-		try {
-			Requests.GetApplicationEnvironment request = new Requests.GetApplicationEnvironment()
-					.withId(applicationId);
-
-			return this.client.getApplicationEnvironment(request).getEnvironment();
-		}
-		catch (RestClientException rce) {
-			return null;
-		}
-	}
-
-	private Responses.GetApplicationStatistics safeGetApplicationStatistics(String applicationId) {
-		try {
-			Requests.GetApplicationStatistics statsRequest = new Requests.GetApplicationStatistics()
-					.withId(applicationId);
-
-			return this.client.getApplicationStatistics(statsRequest);
-		}
-		catch (RestClientException rce) {
-			return new Responses.GetApplicationStatistics();
-		}
 	}
 
 	@Override
@@ -289,6 +265,30 @@ class CloudFoundryApplicationTemplate implements CloudFoundryApplicationOperatio
 		return applications.get(0).getMetadata().getId();
 	}
 
+	private Map<String, String> safeGetApplicationEnvironment(String applicationId) {
+		try {
+			Requests.GetApplicationEnvironment request = new Requests.GetApplicationEnvironment()
+					.withId(applicationId);
+
+			return this.client.getApplicationEnvironment(request).getEnvironment();
+		}
+		catch (RestClientException rce) {
+			return null;
+		}
+	}
+
+	private Responses.GetApplicationStatistics safeGetApplicationStatistics(String applicationId) {
+		try {
+			Requests.GetApplicationStatistics statsRequest = new Requests.GetApplicationStatistics()
+					.withId(applicationId);
+
+			return this.client.getApplicationStatistics(statsRequest);
+		}
+		catch (RestClientException rce) {
+			return new Responses.GetApplicationStatistics();
+		}
+	}
+
 	private boolean startApplication(String appId) {
 		Requests.UpdateApplication updateRequest = new Requests.UpdateApplication()
 				.withId(appId)
@@ -333,6 +333,18 @@ class CloudFoundryApplicationTemplate implements CloudFoundryApplicationOperatio
 		return true;
 	}
 
+	private static String getDomainId(CloudControllerOperations client, String domain) {
+		Requests.ListSharedDomains sharedDomainsRequest = new Requests.ListSharedDomains()
+				.withName(domain);
+
+		Responses.ListSharedDomains listSharedDomainsResponse = client.listSharedDomains(sharedDomainsRequest);
+		List<Responses.NamedResource> domains = listSharedDomainsResponse.getResources();
+		if (domains.size() != 1) {
+			return null;
+		}
+		return domains.get(0).getMetadata().getId();
+	}
+
 	private static String getSpaceId(CloudControllerOperations client, String organizationName, String spaceName) {
 		Requests.ListOrganizations organizationsRequest = new Requests.ListOrganizations()
 				.withName(organizationName);
@@ -352,17 +364,5 @@ class CloudFoundryApplicationTemplate implements CloudFoundryApplicationOperatio
 			return null;
 		}
 		return spaces.get(0).getMetadata().getId();
-	}
-
-	private static String getDomainId(CloudControllerOperations client, String domain) {
-		Requests.ListSharedDomains sharedDomainsRequest = new Requests.ListSharedDomains()
-				.withName(domain);
-
-		Responses.ListSharedDomains listSharedDomainsResponse = client.listSharedDomains(sharedDomainsRequest);
-		List<Responses.NamedResource> domains = listSharedDomainsResponse.getResources();
-		if (domains.size() != 1) {
-			return null;
-		}
-		return domains.get(0).getMetadata().getId();
 	}
 }

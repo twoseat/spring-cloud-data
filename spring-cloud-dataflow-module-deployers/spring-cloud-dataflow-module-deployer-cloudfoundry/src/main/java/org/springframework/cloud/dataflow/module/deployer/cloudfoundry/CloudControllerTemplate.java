@@ -32,30 +32,18 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @author Eric Bottard
  */
 class CloudControllerTemplate implements CloudControllerOperations {
-
-	private final URI endpoint;
-
-	private final ExtendedOAuth2RestOperations restOperations;
-
 	/**
 	 * Cloud Controller REST API version
 	 */
 	private static final String CC_API_VERSION = "v2";
 
+	private final URI endpoint;
+
+	private final ExtendedOAuth2RestOperations restOperations;
+
 	CloudControllerTemplate(URI endpoint, ExtendedOAuth2RestOperations restOperations) {
 		this.endpoint = endpoint;
 		this.restOperations = restOperations;
-	}
-
-	@Override
-	public Responses.ListRoutes listRoutes(Requests.ListRoutes request) {
-		URI uri = UriComponentsBuilder.fromUri(this.endpoint)
-				.pathSegment(CC_API_VERSION, "routes")
-				.queryParam("q", "host:" + request.getHost())
-				.queryParam("q", "domain_guid:" + request.getDomainId())
-				.build().toUri();
-
-		return this.restOperations.getForObject(uri, Responses.ListRoutes.class);
 	}
 
 	@Override
@@ -145,6 +133,17 @@ class CloudControllerTemplate implements CloudControllerOperations {
 				.build().toUri();
 
 		return this.restOperations.getForObject(uri, Responses.ListOrganizations.class);
+	}
+
+	@Override
+	public Responses.ListRoutes listRoutes(Requests.ListRoutes request) {
+		URI uri = UriComponentsBuilder.fromUri(this.endpoint)
+				.pathSegment(CC_API_VERSION, "routes")
+				.queryParam("q", "host:" + request.getHost())
+				.queryParam("q", "domain_guid:" + request.getDomainId())
+				.build().toUri();
+
+		return this.restOperations.getForObject(uri, Responses.ListRoutes.class);
 	}
 
 	@Override

@@ -51,8 +51,7 @@ class ApplicationModuleDeployer implements ModuleDeployer {
 
 	@Override
 	public ModuleDeploymentId deploy(ModuleDeploymentRequest request) {
-		ModuleDefinition definition = request.getDefinition();
-		ModuleDeploymentId moduleDeploymentId = new ModuleDeploymentId(definition.getGroup(), definition.getLabel());
+		ModuleDeploymentId moduleDeploymentId = ModuleDeploymentId.fromModuleDefinition(request.getDefinition());
 		String applicationName = this.cloudFoundryModuleDeploymentConverter.toApplicationName(moduleDeploymentId);
 
 		Results.PushBindAndStartApplication response = this.applicationOperations.pushBindAndStartApplication(new Parameters.PushBindAndStartApplication()
@@ -76,32 +75,32 @@ class ApplicationModuleDeployer implements ModuleDeployer {
 		Map<ModuleDeploymentId, ModuleStatus> result = new HashMap<>();
 		for (Map.Entry<String, ApplicationStatus> e : response.getApplications().entrySet()) {
 			ApplicationStatus applicationStatus = e.getValue();
-			ModuleDeploymentId moduleId = this.cloudFoundryModuleDeploymentConverter.getModuleId(applicationStatus);
-			if (null != moduleId) { // filter out non-modules
-				result.put(moduleId,
-						new ModuleStatusBuilder().withId(moduleId).withApplicationStatus(applicationStatus).build());
+			ModuleDeploymentId moduleDeploymentId = this.cloudFoundryModuleDeploymentConverter.getModuleId(applicationStatus);
+			if (null != moduleDeploymentId) { // filter out non-modules
+				result.put(moduleDeploymentId,
+						new ModuleStatusBuilder().withId(moduleDeploymentId).withApplicationStatus(applicationStatus).build());
 			}
 		}
 		return result;
 	}
 
 	@Override
-	public ModuleStatus status(ModuleDeploymentId moduleId) {
-		String applicationName = this.cloudFoundryModuleDeploymentConverter.toApplicationName(moduleId);
+	public ModuleStatus status(ModuleDeploymentId moduleDeploymentId) {
+		String applicationName = this.cloudFoundryModuleDeploymentConverter.toApplicationName(moduleDeploymentId);
 
 		Results.GetApplicationsStatus response = this.applicationOperations.getApplicationsStatus(
 				new Parameters.GetApplicationsStatus().withName(applicationName));
 
-		return new ModuleStatusBuilder().withId(moduleId).withApplicationStatus(response.getApplications().get(applicationName)).build();
+		return new ModuleStatusBuilder().withId(moduleDeploymentId).withApplicationStatus(response.getApplications().get(applicationName)).build();
 	}
 
 	@Override
-	public void undeploy(ModuleDeploymentId moduleId) {
+	public void undeploy(ModuleDeploymentId moduleDeploymentId) {
 		Results.DeleteApplication response = this.applicationOperations.deleteApplication(
 				new Parameters.DeleteApplication()
-						.withName(this.cloudFoundryModuleDeploymentConverter.toApplicationName(moduleId)));
+						.withName(this.cloudFoundryModuleDeploymentConverter.toApplicationName(moduleDeploymentId)));
 		if (!response.isFound() || !response.isDeleted()) {
-			throw new IllegalStateException("Module " + moduleId + " is not deployed");
+			throw new IllegalStateException("Module " + moduleDeploymentId + " is not deployed");
 		}
 	}
 }
