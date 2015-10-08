@@ -2,6 +2,11 @@
 
 set -e -x
 
+
+pushd redis
+  redis-server
+popd
+
 pushd spring-cloud-dataflow
   mvn clean package
 popd

@@ -4,6 +4,7 @@ image: docker:///maven#3-jdk-7
 
 inputs:
 - name: spring-cloud-dataflow
+- name: redis
 
 run:
   path: spring-cloud-dataflow/ci/scripts/build

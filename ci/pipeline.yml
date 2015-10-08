@@ -5,10 +5,16 @@ resources:
   source:
     uri: https://github.com/twoseat/spring-cloud-dataflow.git
     branch: ci
+- name: redis
+  type: github-release
+  source:
+    user: antirez
+    repository: redis
 
 jobs:
 - name: build
   plan:
+  - get: redis
   - get: spring-cloud-dataflow
     trigger: true
   - task: maven
