@@ -19,7 +19,7 @@ package org.springframework.cloud.dataflow.module;
 import java.util.Map;
 
 /**
- * Status for an individual instance of a {@link org.springframework.xd.module.ModuleDescriptor}
+ * Status for an individual instance of a {@link org.springframework.cloud.dataflow.core.ModuleDefinition}
  * deployment. The underlying instance may be backed by an application context in
  * the JVM, or by a remote process managed by a distributed runtime.
  *

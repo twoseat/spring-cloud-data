@@ -55,23 +55,25 @@ class ApplicationModuleDeployer implements ModuleDeployer {
 
 	public static final String MARKER_ENVIRONMENT_VAR_NAME = "SPRING_CLOUD_DATAFLOW_MODULE";
 
-	private final CloudFoundryClient cloudFoundryClient;
-
 	private final Logger logger = LoggerFactory.getLogger(ApplicationModuleDeployer.class);
 
-	private final CloudFoundryModuleDeployerProperties properties;
+	private final Set<String> serviceNames;
+
+	private final CloudFoundryClient cloudFoundryClient;
+
+	private final Resource launcher;
+
+	private final String domain;
+
+	ApplicationModuleDeployer(String domain, Resource launcher, Set<String> serviceNames, CloudFoundryClient cloudFoundryClient) {
+		this.domain = domain;
+		this.launcher = launcher;
+		this.serviceNames = serviceNames;
+		this.cloudFoundryClient = cloudFoundryClient;
+	}
 
 	public ApplicationModuleDeployer(CloudFoundryModuleDeployerProperties properties) {
-		CloudCredentials credentials = new CloudCredentials(properties.getUsername(), properties.getPassword());
-		CloudFoundryClient cloudFoundryClient = new CloudFoundryClient(credentials,
-				properties.getApiEndpoint(),
-				properties.getOrganization(),
-				properties.getSpace(),
-				properties.isSkipSslValidation());
-		cloudFoundryClient.login();
-
-		this.properties = properties;
-		this.cloudFoundryClient = cloudFoundryClient;
+		this(properties.getDomain(), properties.getModuleLauncherLocation(), properties.getServices(), getCloudFoundryClient(properties));
 	}
 
 	@Override
@@ -91,7 +93,7 @@ class ApplicationModuleDeployer implements ModuleDeployer {
 			final int disk = 1024;
 			final int memory = 1024;
 			final List<String> uris = this.deduceUris(appName);
-			final List<String> serviceNames = new ArrayList<>(this.properties.getServices());
+			final List<String> serviceNames = new ArrayList<>(this.serviceNames);
 
 			undoer.attempt(new Runnable() {
 				@Override
@@ -121,7 +123,7 @@ class ApplicationModuleDeployer implements ModuleDeployer {
 		}
 
 		{
-			final Resource launcher = ApplicationModuleDeployer.this.properties.getModuleLauncherLocation();
+			final Resource launcher = this.launcher;
 
 			undoer.attempt(new Callable<Void>() {
 				@Override
@@ -257,7 +259,7 @@ class ApplicationModuleDeployer implements ModuleDeployer {
 	}
 
 	private List<String> deduceUris(String appName) {
-		String uriString = appName + "." + this.properties.getDomain();
+		String uriString = appName + "." + this.domain;
 		return Collections.singletonList(uriString);
 	}
 
@@ -314,10 +316,19 @@ class ApplicationModuleDeployer implements ModuleDeployer {
 		return original.replaceAll("([^A-Za-z0-9_\\-.,:\\/@\\n])", "\\\\$1").replaceAll("\n", "'\\\\n'");
 	}
 
+	private static CloudFoundryClient getCloudFoundryClient(CloudFoundryModuleDeployerProperties properties) {
+		CloudCredentials credentials = new CloudCredentials(properties.getUsername(), properties.getPassword());
+		CloudFoundryClient cloudFoundryClient = new CloudFoundryClient(credentials,
+				properties.getApiEndpoint(),
+				properties.getOrganization(),
+				properties.getSpace(),
+				properties.isSkipSslValidation());
+		cloudFoundryClient.login();
+		return cloudFoundryClient;
+	}
+
 	/**
 	 * Status callback that prints debug information using the outer class logger.
-	 *
-	 * @author Eric Bottard
 	 */
 	private class LoggingUploadStatusCallback implements UploadStatusCallback {
 		private final String appName;

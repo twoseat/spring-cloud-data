@@ -101,7 +101,7 @@ public class CloudFoundryModuleInstanceStatus implements ModuleInstanceStatus {
 		Map<String, String> result = new HashMap<>();
 		if (instanceStats != null) {
 			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+			formatter.setTimeZone(TimeZone.getTimeZone("Coordinated Universal Time"));
 
 			InstanceStats.Usage usage = instanceStats.getUsage();
 			result.put("usage.time", formatter.format(usage.getTime()));

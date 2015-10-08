@@ -37,7 +37,7 @@ public class CloudFoundryModuleDeployerConfiguration {
 
 	@Bean
 	public ModuleDeployer processModuleDeployer() {
-		return new ApplicationModuleDeployer(properties);
+		return new ApplicationModuleDeployer(this.properties);
 	}
 
 	@Bean
